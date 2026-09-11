@@ -16,7 +16,15 @@
 
     <?php include_once('header.php'); ?>
         <h1>Site de recettes</h1>
+        <?php
+            if (!isset($_GET['email']) || !isset($_GET['message']))
+            {
+                echo('<h1>Il faut un email et un message pour soumettre le formulaire.</h1>');
 
+                // Arrête l'exécution de PHP
+                return;
+            }
+        ?>
         <h1>Message bien reçu !</h1>
 
             <div class="card">
