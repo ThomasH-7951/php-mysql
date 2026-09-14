@@ -22,10 +22,12 @@
             include_once('variables.php');
             include_once('functions.php');
         ?>
+        <?php include_once('login.php'); ?>
 
         <!-- inclusion de l'entête du site -->
         <?php include_once('header.php'); ?>
         
+        <?php if(isset($loggedUser)): ?>
         <?php foreach(getRecipes($recipes) as $recipe) : ?>
             <article>
                 <h3><?php echo $recipe['title']; ?></h3>

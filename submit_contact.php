@@ -52,7 +52,7 @@
                                 echo "L'envoi d'image a bien été effectué !";
                             }
                         }
-                    }
+                    }s
                 ?>
             </div>
             </div>
