@@ -1,65 +1,48 @@
 <?php
 
 // Validation du formulaire
-if (isset($_POST['email']) && isset($_POST['password'])) {
+if (isset($_POST['email']) &&  isset($_POST['password'])) {
     foreach ($users as $user) {
-        if ($user['email'] === $_POST['email'] && $user['password'] === $_POST['password']) {
-            $loggedUser = [ 'email' => $user['email'], ];
+        if (
+            $user['email'] === $_POST['email'] &&
+            $user['password'] === $_POST['password']
+        ) {
+            //$loggedUser = ['email' => $user['email'],];
             // Enregistrement de l'email de l'utilisateur en session
             $_SESSION['LOGGED_USER'] = $user['email'];
-            // Cookie qui expire dans un an
-            setcookie('LOGGED_USER',$loggedUser['email'],
-                    time() + 365*24*3600,"","",true,true);
-        }
-        else {
-            $errorMessage = sprintf('Les informations envoyées ne permettent pas de vous identifier : (%s/%s)', $_POST['email'], $_POST['password']);
+        } else {
+            $errorMessage = sprintf('Les informations envoyées ne permettent pas de vous identifier : (%s/%s)',
+                $_POST['email'],
+                $_POST['password']
+            );
         }
     }
 }
-// Si le cookie est présent
-if (isset($_COOKIE['LOGGED_USER'])) {
-$loggedUser = ['email' => $_COOKIE['LOGGED_USER'],];
-}
 ?>
 
-
+<!-- Si utilisateur/trice est non identifié(e), on affiche le formulaire -->
 <?php if(!isset($_SESSION['LOGGED_USER'])): ?>
-
-  <!-- Si utilisateur/trice n'est pas identifié(e), on affiche le formulaire -->
-  <?php if (!isset($loggedUser)) : ?>
-  <form action="" method="post">
+<form action="index.php" method="post">
     <!-- si message d'erreur on l'affiche -->
-    <?php if (isset($errorMessage)) : ?>
-      <div class="alert alert-danger" role="alert">
-        <?php echo $errorMessage; ?>
-      </div>
+    <?php if(isset($errorMessage)) : ?>
+        <div class="alert alert-danger" role="alert">
+            <?php echo $errorMessage; ?>
+        </div>
     <?php endif; ?>
     <div class="mb-3">
-      <label for="email" class="form-label">Email</label>
-      <input type="email" class="form-control" id="email" name="email"
-            aria-describedby="email-help" placeholder="you@exemple.com">
-      <div id="email-help" class="form-text">
-        L'email utilisé lors de la création de compte.
-      </div>
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" aria-describedby="email-help" placeholder="you@exemple.com">
+        <div id="email-help" class="form-text">L'email utilisé lors de la création de compte.</div>
     </div>
     <div class="mb-3">
-      <label for="password" class="form-label">Mot de passe</label>
-      <input type="password" class="form-control" id="password" name="password">
+        <label for="password" class="form-label">Mot de passe</label>
+        <input type="password" class="form-control" id="password" name="password">
     </div>
     <button type="submit" class="btn btn-primary">Envoyer</button>
-  </form>
-
-  <!-- Si utilisateur/trice bien connectée on affiche un message de succès -->
-  <?php else: ?>
-    <div class="alert alert-success" role="alert">
-      Bonjour <?php echo $loggedUser['email']; ?> et bienvenue sur le site !
-    </div>
-  <?php endif; ?>
-  <!-- Affichage du bloc de succès -->
+</form>
+<!-- Si utilisateur/trice bien connectée on affiche un message de succès -->
 <?php else: ?>
     <div class="alert alert-success" role="alert">
-
-        <!-- Souhaiter la bienvenue -->
-        Bonjour et bienvenue sur le site <?php echo $_SESSION['LOGGED_USER']; ?>
+        Bonjour <?php echo $_SESSION['LOGGED_USER']; ?> et bienvenue sur le site !
     </div>
 <?php endif; ?>
